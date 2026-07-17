@@ -4,6 +4,7 @@ import { ArrowUpRight, GraduationCap, Mail, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GitHubIcon } from "@/components/shared/icons";
+import { CvDialog } from "@/components/shared/cv-dialog";
 import { Reveal } from "@/components/motion/reveal";
 import { founderPhoto } from "@/lib/data/founder";
 import { doiUrl, publications } from "@/lib/data/publications";
@@ -145,6 +146,7 @@ export default function AboutPage() {
                   Get in touch
                 </a>
               </Button>
+              <CvDialog />
               <Button asChild variant="outline" className="rounded-full">
                 <a href={site.social.github} target="_blank" rel="noreferrer">
                   <GitHubIcon className="size-4" />

@@ -102,6 +102,13 @@ npm run build   # ⚠️ dev server চালু থাকা অবস্থা
 - আসল ছবি: `~/IMG_20241007_175559.jpg` → resize 1100px, EXIF strip,
   নতুন blurDataURL, About-এ objectPosition 50% 30%
 - Git history rewrite: সব Co-Authored-By লাইন মুছে ফেলা হয়েছে
+- Remote যোগ: `origin → github.com/Danial-Dirar/portfolio.git` (owner নিজে push দেন)
+- **CV viewer:** About-এর sidebar-এ "View CV" button → animated modal
+  (`components/shared/cv-dialog.tsx`, framer-motion spring + backdrop blur)।
+  Preview = pre-rendered webp pages (`public/cv/page-*.webp`, mobile-safe);
+  Print = hidden iframe দিয়ে আসল PDF (`public/cv/danial-dirar-cv.pdf`),
+  fallback new tab; Download = `<a download>`। CV আপডেট হলে: নতুন PDF
+  `public/cv/`-তে রেখে `pdftoppm -png -r 150` → magick webp — একই নামে।
 
 ## Pending / জিজ্ঞেস করার আছে
 
