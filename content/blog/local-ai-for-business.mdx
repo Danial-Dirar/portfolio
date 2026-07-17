@@ -1,0 +1,66 @@
+---
+title: "Local AI for business: what I learned building HiveMind"
+date: "2026-07-18"
+tags: ["local-ai", "rag", "llm"]
+excerpt: "Cloud LLMs are easy — until a client's data can't leave the building. Notes from shipping a fully offline research assistant."
+cover: "/work/haifa-hivemind/cover.webp"
+---
+
+Cloud LLM APIs are the easy path — until you meet a client whose data simply
+cannot leave the building. A researcher with unpublished results. A firm with
+client records. A hospital. That constraint changes the whole architecture.
+
+[Haifa HiveMind](https://github.com/Danial-Dirar/haifa-hivemind) is a private,
+local research assistant I built for exactly that case: drop in your papers, ask
+grounded questions with citations, and everything — embeddings, retrieval,
+generation, fine-tuning — happens on one machine.
+
+## The stack that survived
+
+After a lot of iteration, the shape that worked:
+
+```text
+Electron / React UI
+        │
+FastAPI (local only)
+        │
+ChromaDB + SQLite  ──  Ollama (LLM + vision)
+        │
+QLoRA fine-tune loop (approved answers → training data)
+```
+
+A few lessons that generalise to any local-AI-for-business project:
+
+## 1. Retrieval quality beats model size
+
+On a single consumer GPU you can't brute-force with a 70B model. A well-tuned
+retrieval layer in front of an 8B model beat a lazy pipeline in front of a much
+bigger one, every time. Chunking strategy and citation grounding mattered more
+than parameter count.
+
+## 2. Feedback is your fine-tuning dataset
+
+Users reject bad answers anyway — capture it. Rejected answers trigger a
+re-think; approved answers become QLoRA training pairs. The assistant slowly
+bends toward how *this* user works, which no cloud API will do with private
+data.
+
+```python
+# the loop, conceptually
+if user.approves(answer):
+    training_set.add(question, answer)   # future QLoRA pass
+else:
+    answer = rethink(question, feedback) # retrieval widened, prompt adjusted
+```
+
+## 3. Give the GPU an off switch
+
+A business machine is not a server farm. Simple **On / Pause / Off** power
+controls — keeping the GPU busy only when someone is actually asking questions —
+did more for adoption than any benchmark number.
+
+---
+
+If your business is weighing cloud vs. local AI and the deciding factor is
+privacy, the local path is more practical than most teams assume. If you want
+help building one, [reach out](/about).
