@@ -120,7 +120,6 @@ export function TerminalHero() {
             className="mt-4 font-heading text-4xl font-bold tracking-tight text-balance md:text-6xl"
           >
             Hi, I&apos;m <span className="text-gradient">{site.name}</span>
-            <span className="cursor-blink" aria-hidden />
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 16 }}

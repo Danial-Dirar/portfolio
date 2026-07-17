@@ -120,7 +120,7 @@ export default function AboutPage() {
                   placeholder="blur"
                   blurDataURL={founderPhoto.blurDataURL}
                   className="object-cover"
-                  style={{ objectPosition: "55% 22%" }}
+                  style={{ objectPosition: "50% 30%" }}
                 />
               </div>
             </div>

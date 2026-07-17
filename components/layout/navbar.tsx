@@ -27,7 +27,6 @@ export function Navbar() {
           <span className="text-primary">{site.handle}</span>
           <span className="text-muted-foreground">@haifa</span>
           <span className="text-muted-foreground">:~$</span>
-          <span className="cursor-blink" aria-hidden />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">

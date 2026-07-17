@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
-import { InlineScript } from "@/components/theme/inline-script";
+import Script from "next/script";
 import { themeInitScript } from "@/components/theme/theme-script";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -38,9 +38,17 @@ export default function RootLayout({
       className={`${geistSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
-        <InlineScript html={themeInitScript} />
+        {/* Blocking anti-FOUC theme script — next/script beforeInteractive runs
+            it before hydration without confusing React 19's head hydration. */}
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
       </head>
-      <body className="flex min-h-full flex-col">
+      {/* suppressHydrationWarning: browser extensions inject attributes on
+          <body> before React hydrates. */}
+      <body suppressHydrationWarning className="flex min-h-full flex-col">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
