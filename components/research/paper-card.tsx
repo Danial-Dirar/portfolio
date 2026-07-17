@@ -1,14 +1,9 @@
-"use client";
-
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, ChevronDown, FlaskConical } from "lucide-react";
+import { ArrowUpRight, FlaskConical } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { doiUrl, type ResearchPaper } from "@/lib/data/research";
 import { cn } from "@/lib/utils";
 
 export function PaperCard({ paper }: { paper: ResearchPaper }) {
-  const [open, setOpen] = useState(false);
   const ongoing = paper.status === "ongoing";
 
   return (
@@ -19,9 +14,7 @@ export function PaperCard({ paper }: { paper: ResearchPaper }) {
           <span
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5",
-              ongoing
-                ? "bg-brand-2/15 text-brand-2"
-                : "bg-primary/15 text-primary"
+              ongoing ? "bg-brand-2/15 text-brand-2" : "bg-primary/15 text-primary"
             )}
           >
             <FlaskConical className="size-3" />
@@ -64,45 +57,20 @@ export function PaperCard({ paper }: { paper: ResearchPaper }) {
           </div>
         )}
 
-        {/* topics + toggle */}
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap gap-1.5">
-            {paper.topics.map((t) => (
-              <Badge key={t} variant="secondary" className="font-mono text-[11px]">
-                {t}
-              </Badge>
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            className="inline-flex shrink-0 items-center gap-1 font-mono text-[13px] text-muted-foreground transition-colors hover:text-primary"
-          >
-            {open ? "hide" : "read"} abstract
-            <ChevronDown
-              className={cn("size-3.5 transition-transform", open && "rotate-180")}
-            />
-          </button>
-        </div>
+        {/* abstract — always visible */}
+        <p className="mt-5 border-t border-border/50 pt-4 text-sm leading-relaxed text-foreground/85">
+          <span className="font-mono text-primary">abstract › </span>
+          {paper.abstract}
+        </p>
 
-        {/* expandable abstract */}
-        <AnimatePresence initial={false}>
-          {open && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="overflow-hidden"
-            >
-              <p className="mt-4 border-t border-border/50 pt-4 text-sm leading-relaxed text-foreground/85">
-                <span className="font-mono text-primary">abstract › </span>
-                {paper.abstract}
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* topics */}
+        <div className="mt-5 flex flex-wrap gap-1.5">
+          {paper.topics.map((t) => (
+            <Badge key={t} variant="secondary" className="font-mono text-[11px]">
+              {t}
+            </Badge>
+          ))}
+        </div>
 
         {paper.doi && (
           <a
