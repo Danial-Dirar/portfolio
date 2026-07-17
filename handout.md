@@ -39,6 +39,7 @@ app/
   layout.tsx        fonts (Geist + JetBrains Mono), theme script, Navbar/Footer
   page.tsx          Home: TerminalHero + featured projects + latest 3 posts
   projects/page.tsx সব project grid
+  research/page.tsx papers + expandable abstracts (data/research.ts)
   blog/page.tsx     post list + ?tag= filter (dynamic route)
   blog/[slug]/      MDX render, SSG via generateStaticParams
   about/page.tsx    bio, skills, publications, portrait, contact buttons
@@ -114,6 +115,17 @@ npm run build   # ⚠️ dev server চালু থাকা অবস্থা
   আটকে দিচ্ছিল। Fix: `createPortal(document.body)`। **Fixed overlay বানালে
   সবসময় portal ব্যবহার করবে।** এখন lightbox স্টাইল: কালো dim + মাঝখানে
   বড় pop-out (Zen browser-এর ছবি viewer-এর মতো, owner-এর reference)।
+
+### 2026-07-18 — session 2: Research tab + softer light mode
+
+- Nav-এ **Research** যোগ (Projects-এর পাশে), `/research` page।
+- `lib/data/research.ts` — ২টা published paper (full abstract + result
+  highlights যেমন 3,315 MAR sites / 97% turbidity) + ১টা ongoing thesis।
+  Abstract Semantic Scholar + Crossref API থেকে (Springer login-wall এড়াতে)।
+- `components/research/paper-card.tsx` — expandable abstract (framer height
+  animation), published/ongoing badge, highlight stat grid, DOI link।
+- Light mode warm-paper করা হয়েছে (flashbang white না)।
+- CV lightbox portal fix (উপরে session 1-এ ব্যাখ্যা করা bug)।
 
 ## Pending / জিজ্ঞেস করার আছে
 
