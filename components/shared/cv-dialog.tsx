@@ -9,8 +9,8 @@ import { site } from "@/lib/site";
 
 const CV_PDF = "/cv/danial-dirar-cv.pdf";
 const CV_PAGES = [
-  { src: "/cv/page-1.webp", width: 1275, height: 1650 },
-  { src: "/cv/page-2.webp", width: 1275, height: 1650 },
+  { src: "/cv/page-1.webp", width: 1700, height: 2200 },
+  { src: "/cv/page-2.webp", width: 1700, height: 2200 },
 ] as const;
 
 /**
@@ -66,7 +66,7 @@ export function CvDialog() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[70] flex items-center justify-center bg-background/70 p-3 backdrop-blur-md md:p-6"
+            className="fixed inset-0 z-[70] bg-background/70 backdrop-blur-md"
             onClick={() => setOpen(false)}
             role="dialog"
             aria-modal="true"
@@ -77,7 +77,7 @@ export function CvDialog() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 28, scale: 0.97 }}
               transition={{ type: "spring", stiffness: 260, damping: 26 }}
-              className="terminal-window flex max-h-full w-full max-w-3xl flex-col"
+              className="terminal-window absolute inset-2 flex flex-col md:inset-x-8 md:inset-y-5 lg:inset-x-16"
               onClick={(e) => e.stopPropagation()}
             >
               {/* titlebar */}
@@ -118,26 +118,28 @@ export function CvDialog() {
                 </div>
               </div>
 
-              {/* pages */}
-              <div className="flex-1 space-y-4 overflow-y-auto bg-secondary/40 p-3 md:p-5">
-                {CV_PAGES.map((page, i) => (
-                  <motion.div
-                    key={page.src}
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.12 + i * 0.08, duration: 0.35 }}
-                    className="overflow-hidden rounded-lg border border-border/60 bg-white shadow-lg"
-                  >
-                    <Image
-                      src={page.src}
-                      alt={`CV page ${i + 1}`}
-                      width={page.width}
-                      height={page.height}
-                      sizes="(min-width: 768px) 720px, 100vw"
-                      priority={i === 0}
-                    />
-                  </motion.div>
-                ))}
+              {/* pages — big, naturally scrollable */}
+              <div className="flex-1 overflow-y-auto bg-secondary/40 p-3 md:p-6">
+                <div className="mx-auto max-w-4xl space-y-5">
+                  {CV_PAGES.map((page, i) => (
+                    <motion.div
+                      key={page.src}
+                      initial={{ opacity: 0, y: 24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.12 + i * 0.08, duration: 0.35 }}
+                      className="overflow-hidden rounded-lg border border-border/60 bg-white shadow-lg"
+                    >
+                      <Image
+                        src={page.src}
+                        alt={`CV page ${i + 1}`}
+                        width={page.width}
+                        height={page.height}
+                        sizes="(min-width: 1024px) 896px, 100vw"
+                        priority={i === 0}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </motion.div>
 
