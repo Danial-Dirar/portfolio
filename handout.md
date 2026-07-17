@@ -108,7 +108,12 @@ npm run build   # ⚠️ dev server চালু থাকা অবস্থা
   Preview = pre-rendered webp pages (`public/cv/page-*.webp`, mobile-safe);
   Print = hidden iframe দিয়ে আসল PDF (`public/cv/danial-dirar-cv.pdf`),
   fallback new tab; Download = `<a download>`। CV আপডেট হলে: নতুন PDF
-  `public/cv/`-তে রেখে `pdftoppm -png -r 150` → magick webp — একই নামে।
+  `public/cv/`-তে রেখে `pdftoppm -png -r 200` → magick webp — একই নামে।
+- **⚠️ শেখা bug:** CvDialog প্রথমে About-এর `Reveal`-এর ভেতরে ছিল — Reveal-এর
+  CSS transform `position:fixed`-কে hijack করে overlay-টা sidebar-এর ভেতরে
+  আটকে দিচ্ছিল। Fix: `createPortal(document.body)`। **Fixed overlay বানালে
+  সবসময় portal ব্যবহার করবে।** এখন lightbox স্টাইল: কালো dim + মাঝখানে
+  বড় pop-out (Zen browser-এর ছবি viewer-এর মতো, owner-এর reference)।
 
 ## Pending / জিজ্ঞেস করার আছে
 
