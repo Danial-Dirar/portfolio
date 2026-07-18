@@ -9,6 +9,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import { Badge } from "@/components/ui/badge";
 import { formatDate, getAllPosts, getPost } from "@/lib/blog";
 import { site } from "@/lib/site";
+import { asset } from "@/lib/asset";
 
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -76,7 +77,7 @@ export default async function BlogPostPage({
         {post.cover && (
           <div className="relative mt-8 aspect-[16/8] overflow-hidden rounded-xl border border-border/60">
             <Image
-              src={post.cover}
+              src={asset(post.cover)}
               alt=""
               fill
               sizes="(min-width: 768px) 768px, 100vw"

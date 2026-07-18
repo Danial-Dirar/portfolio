@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { formatDate, type PostMeta } from "@/lib/posts";
+import { asset } from "@/lib/asset";
 
 export function PostCard({ post }: { post: PostMeta }) {
   return (
@@ -9,7 +10,7 @@ export function PostCard({ post }: { post: PostMeta }) {
       {post.cover && (
         <div className="relative hidden w-36 shrink-0 overflow-hidden rounded-lg border border-border/50 sm:block">
           <Image
-            src={post.cover}
+            src={asset(post.cover)}
             alt=""
             fill
             sizes="144px"

@@ -163,6 +163,13 @@ npm run build   # ⚠️ dev server চালু থাকা অবস্থা
   fs-free module (types + formatDate) — client tree-তে `node:fs` টানা এড়াতে;
   `lib/blog.ts` ওখান থেকে re-export করে।
 - **Blog Studio** (উপরে "নতুন blog post" দেখো) — `studio/` subfolder, `npm run studio`।
+- **⚠️ basePath image bug (fixed):** project-repo deploy-এ (`/portfolio`) ছবি load
+  হচ্ছিল না। কারণ `images.unoptimized` থাকায় `next/image` src-এ basePath বসায় না,
+  আর raw `<img>`/`<iframe>`/`<a>`-তেও বসে না → `/founder/...`, `/work/...`, `/cv/...`
+  সব 404। Fix: `lib/asset.ts` → `asset(path)` যেটা `NEXT_PUBLIC_BASE_PATH` prefix
+  বসায়। **যেকোনো public asset (`/founder`,`/work`,`/cv`,blog cover) `<Image src>` /
+  href-এ সবসময় `asset()` দিয়ে wrap করবে।** ব্যবহার: about portrait, project-card,
+  cv-dialog (webp+pdf), post-card, blog/[slug]।
 
 ## Pending / জিজ্ঞেস করার আছে
 

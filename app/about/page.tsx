@@ -7,6 +7,7 @@ import { GitHubIcon } from "@/components/shared/icons";
 import { CvDialog } from "@/components/shared/cv-dialog";
 import { Reveal } from "@/components/motion/reveal";
 import { founderPhoto } from "@/lib/data/founder";
+import { asset } from "@/lib/asset";
 import { doiUrl, publications } from "@/lib/data/publications";
 import { site } from "@/lib/site";
 
@@ -114,7 +115,7 @@ export default function AboutPage() {
               <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-brand-1/10 blur-2xl" />
               <div className="relative aspect-[4/5] overflow-hidden rounded-2xl ring-1 ring-border/60">
                 <Image
-                  src={founderPhoto.src}
+                  src={asset(founderPhoto.src)}
                   alt={founderPhoto.alt}
                   fill
                   sizes="260px"

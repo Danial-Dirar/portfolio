@@ -3,6 +3,7 @@ import { ArrowUpRight, Folder } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { GitHubIcon } from "@/components/shared/icons";
 import { cn } from "@/lib/utils";
+import { asset } from "@/lib/asset";
 import type { Project } from "@/lib/data/projects";
 
 export function ProjectCard({ project }: { project: Project }) {
@@ -14,7 +15,7 @@ export function ProjectCard({ project }: { project: Project }) {
       <div className="relative aspect-[16/9] overflow-hidden border-b border-border/50">
         {project.image ? (
           <Image
-            src={project.image.src}
+            src={asset(project.image.src)}
             alt={project.image.alt}
             fill
             sizes="(min-width: 768px) 400px, 100vw"

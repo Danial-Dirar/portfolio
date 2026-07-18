@@ -7,11 +7,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Download, FileText, Printer, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { site } from "@/lib/site";
+import { asset } from "@/lib/asset";
 
-const CV_PDF = "/cv/danial-dirar-cv.pdf";
+const CV_PDF = asset("/cv/danial-dirar-cv.pdf");
 const CV_PAGES = [
-  { src: "/cv/page-1.webp", width: 1700, height: 2200 },
-  { src: "/cv/page-2.webp", width: 1700, height: 2200 },
+  { src: asset("/cv/page-1.webp"), width: 1700, height: 2200 },
+  { src: asset("/cv/page-2.webp"), width: 1700, height: 2200 },
 ] as const;
 
 /**
