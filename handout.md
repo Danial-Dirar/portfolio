@@ -85,6 +85,9 @@ commit + push করে → Actions rebuild → ~1 min-এ live। শুধু 
 চলে (owner-এর git creds), browser-এ কোনো token নেই — তাই শুধু owner-ই post
 করতে পারে। Studio-তে পুরনো post-এর list + delete-ও আছে।
 (`studio/server.mjs` = Node built-in HTTP server, localhost-only; `studio/index.html` = UI)
+POST endpoint-এ CSRF/DNS-rebinding guard আছে (`rejectReason()`: Host + Origin +
+`application/json` check) — যাতে অন্য কোনো site তোমার browser দিয়ে localhost-এ
+post/delete/push ট্রিগার করতে না পারে।
 
 **Manual উপায়:**
 1. `content/blog/<slug>.mdx` বানাও — frontmatter: `title, date (yyyy-mm-dd),

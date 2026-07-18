@@ -107,8 +107,33 @@ function json(res, code, obj) {
   res.end(body);
 }
 
+const ALLOWED_HOSTS = new Set([`127.0.0.1:${PORT}`, `localhost:${PORT}`]);
+const ALLOWED_ORIGINS = new Set([`http://127.0.0.1:${PORT}`, `http://localhost:${PORT}`]);
+
+/**
+ * Guard state-changing (POST) requests against CSRF / DNS-rebinding. A page on
+ * another site can send a cross-origin "simple" POST to this localhost server;
+ * these checks reject anything that isn't our own composer talking to us.
+ * Returns an error message to reject with, or null if the request is allowed.
+ */
+function rejectReason(req) {
+  if (req.method !== "POST") return null;
+  if (!ALLOWED_HOSTS.has(req.headers.host)) return "bad host";
+  // Cross-origin form/text posts either send a foreign Origin or (for same-site
+  // navigations) none — require our own Origin explicitly.
+  if (!ALLOWED_ORIGINS.has(req.headers.origin)) return "bad origin";
+  // application/json can't be sent cross-origin without a CORS preflight, which
+  // we never grant — so requiring it blocks the text/plain "simple request" trick.
+  if (!(req.headers["content-type"] || "").startsWith("application/json"))
+    return "json only";
+  return null;
+}
+
 const server = http.createServer(async (req, res) => {
   try {
+    const reject = rejectReason(req);
+    if (reject) return json(res, 403, { error: reject });
+
     if (req.method === "GET" && req.url === "/") {
       const html = await readFile(path.join(HERE, "index.html"), "utf8");
       res.writeHead(200, { "content-type": "text/html; charset=utf-8" });
