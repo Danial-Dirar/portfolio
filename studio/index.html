@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blog Studio</title>
+    <style>
+      :root {
+        --bg: oklch(0.16 0.012 165);
+        --card: oklch(0.2 0.014 165);
+        --fg: oklch(0.93 0.01 160);
+        --primary: oklch(0.87 0.19 162);
+        --primary-fg: oklch(0.16 0.012 165);
+        --muted-fg: oklch(0.68 0.02 160);
+        --border: oklch(0.87 0.19 162 / 14%);
+        --danger: oklch(0.7 0.19 25);
+        --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--mono);
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: var(--primary); }
+      .wrap {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2.5rem 1.25rem 4rem;
+        display: grid;
+        gap: 1.5rem;
+      }
+      header h1 { font-size: 1.35rem; margin: 0; letter-spacing: -0.02em; }
+      header h1 .p { color: var(--primary); }
+      header p { color: var(--muted-fg); margin: 0.35rem 0 0; font-size: 0.85rem; }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.25rem;
+      }
+      label { display: block; font-size: 0.72rem; color: var(--muted-fg); margin: 0 0 0.35rem; text-transform: lowercase; }
+      input, textarea {
+        width: 100%;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        color: var(--fg);
+        font-family: var(--mono);
+        font-size: 0.9rem;
+        padding: 0.6rem 0.75rem;
+        resize: vertical;
+      }
+      input:focus, textarea:focus { outline: none; border-color: var(--primary); }
+      .row { display: grid; gap: 0.9rem; }
+      @media (min-width: 640px) { .row.two { grid-template-columns: 1fr 1fr; } }
+      #body { min-height: 220px; }
+      .title-input { font-size: 1.05rem; font-weight: 600; }
+      .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+      .toggle { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--muted-fg); cursor: pointer; }
+      .toggle input { width: auto; }
+      button.post {
+        background: var(--primary);
+        color: var(--primary-fg);
+        border: none;
+        border-radius: 9px;
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 0.6rem 1.4rem;
+        cursor: pointer;
+      }
+      button.post:disabled { opacity: 0.5; cursor: not-allowed; }
+      .status { font-size: 0.82rem; margin-top: 0.85rem; white-space: pre-wrap; }
+      .status.ok { color: var(--primary); }
+      .status.err { color: var(--danger); }
+      .section-title { font-size: 0.75rem; color: var(--muted-fg); margin: 0 0 0.75rem; }
+      .preview { border-top: 1px dashed var(--border); margin-top: 1rem; padding-top: 1rem; }
+      .preview h2, .preview h3 { color: var(--fg); margin: 0.6rem 0 0.3rem; }
+      .preview code { background: var(--bg); padding: 0.1rem 0.35rem; border-radius: 5px; font-size: 0.85em; }
+      .preview p { margin: 0.4rem 0; }
+      .feed { display: grid; gap: 0.6rem; }
+      .post-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.65rem 0.85rem; border: 1px solid var(--border); border-radius: 9px; }
+      .post-row .meta { min-width: 0; }
+      .post-row .t { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .post-row .d { font-size: 0.72rem; color: var(--muted-fg); }
+      .post-row a.view { font-size: 0.72rem; }
+      button.del { background: transparent; border: 1px solid var(--border); color: var(--danger); border-radius: 7px; padding: 0.3rem 0.6rem; font-family: var(--mono); font-size: 0.72rem; cursor: pointer; }
+      .empty { color: var(--muted-fg); font-size: 0.82rem; }
+      .tagline { color: var(--muted-fg); font-size: 0.72rem; margin-top: 0.4rem; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1><span class="p">$ </span>blog studio</h1>
+        <p>Write a post, hit Post. It saves an .mdx file and (optionally) pushes — the site rebuilds and goes live.</p>
+      </header>
+
+      <div class="card">
+        <div class="row">
+          <div>
+            <label for="title">title</label>
+            <input id="title" class="title-input" placeholder="Give it a title…" autocomplete="off" />
+          </div>
+          <div>
+            <label for="body">what's on your mind?</label>
+            <textarea id="body" placeholder="Write in Markdown — # headings, **bold**, `code`, [links](url)…"></textarea>
+          </div>
+          <div class="row two">
+            <div>
+              <label for="tags">tags (comma separated)</label>
+              <input id="tags" placeholder="ml, generative-ai, notes" autocomplete="off" />
+            </div>
+            <div>
+              <label for="cover">cover image (optional path/url)</label>
+              <input id="cover" placeholder="/blog/my-post/cover.jpg" autocomplete="off" />
+            </div>
+          </div>
+          <div>
+            <label for="excerpt">excerpt (optional — auto from body if blank)</label>
+            <input id="excerpt" placeholder="One-line summary shown in the list" autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="bar">
+          <label class="toggle">
+            <input type="checkbox" id="commit" checked />
+            commit &amp; push (go live now)
+          </label>
+          <button class="post" id="postBtn">Post</button>
+        </div>
+        <div class="status" id="status"></div>
+        <div class="preview" id="preview" hidden></div>
+      </div>
+
+      <div class="card">
+        <p class="section-title">// your posts</p>
+        <div class="feed" id="feed"><p class="empty">Loading…</p></div>
+      </div>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const statusEl = $("status");
+      const previewEl = $("preview");
+
+      // Tiny Markdown preview — good enough to eyeball a post before posting.
+      function mdToHtml(md) {
+        const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        return esc(md)
+          .replace(/^### (.*)$/gm, "<h3>$1</h3>")
+          .replace(/^## (.*)$/gm, "<h2>$1</h2>")
+          .replace(/^# (.*)$/gm, "<h2>$1</h2>")
+          .replace(/`([^`]+)`/g, "<code>$1</code>")
+          .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+          .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+          .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>')
+          .split(/\n{2,}/)
+          .map((b) => (/^<h[23]>/.test(b) ? b : `<p>${b.replace(/\n/g, "<br>")}</p>`))
+          .join("");
+      }
+      function renderPreview() {
+        const body = $("body").value.trim();
+        if (!body) { previewEl.hidden = true; return; }
+        previewEl.hidden = false;
+        previewEl.innerHTML = mdToHtml(body);
+      }
+      $("body").addEventListener("input", renderPreview);
+
+      async function loadFeed() {
+        const feed = $("feed");
+        try {
+          const { posts } = await (await fetch("/api/posts")).json();
+          if (!posts.length) { feed.innerHTML = '<p class="empty">No posts yet — write your first above.</p>'; return; }
+          feed.innerHTML = "";
+          for (const p of posts) {
+            const row = document.createElement("div");
+            row.className = "post-row";
+            row.innerHTML = `
+              <div class="meta">
+                <div class="t">${p.title}</div>
+                <div class="d">${p.date} · ${p.slug}</div>
+              </div>
+              <button class="del" data-slug="${p.slug}">delete</button>`;
+            feed.appendChild(row);
+          }
+          feed.querySelectorAll(".del").forEach((b) =>
+            b.addEventListener("click", () => del(b.dataset.slug))
+          );
+        } catch (e) {
+          feed.innerHTML = '<p class="empty">Could not load posts.</p>';
+        }
+      }
+
+      function setStatus(msg, kind) {
+        statusEl.textContent = msg;
+        statusEl.className = "status" + (kind ? " " + kind : "");
+      }
+
+      function gitLine(git) {
+        if (!git) return "";
+        if (git.skipped) return " Saved locally — commit & push yourself when ready.";
+        if (git.ok) return " " + git.log.join(" · ") + ".";
+        return " Saved, but git failed: " + (git.error || "unknown") + (git.log.length ? " (" + git.log.join(", ") + ")" : "");
+      }
+
+      async function post() {
+        const btn = $("postBtn");
+        const payload = {
+          title: $("title").value,
+          body: $("body").value,
+          tags: $("tags").value,
+          cover: $("cover").value,
+          excerpt: $("excerpt").value,
+          commit: $("commit").checked,
+        };
+        if (!payload.title.trim()) return setStatus("Title is required.", "err");
+        if (!payload.body.trim()) return setStatus("Write something first.", "err");
+        btn.disabled = true;
+        setStatus("Posting…");
+        try {
+          const res = await fetch("/api/publish", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "failed");
+          setStatus("Posted → " + data.saved + "." + gitLine(data.git), "ok");
+          ["title", "body", "tags", "cover", "excerpt"].forEach((id) => ($(id).value = ""));
+          renderPreview();
+          loadFeed();
+        } catch (e) {
+          setStatus("Error: " + e.message, "err");
+        } finally {
+          btn.disabled = false;
+        }
+      }
+      $("postBtn").addEventListener("click", post);
+
+      async function del(slug) {
+        if (!confirm(`Delete "${slug}"? This removes the post file.`)) return;
+        setStatus("Deleting…");
+        try {
+          const res = await fetch("/api/delete", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ slug, commit: $("commit").checked }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "failed");
+          setStatus(`Deleted ${slug}.` + gitLine(data.git), "ok");
+          loadFeed();
+        } catch (e) {
+          setStatus("Error: " + e.message, "err");
+        }
+      }
+
+      loadFeed();
+    </script>
+  </body>
+</html>

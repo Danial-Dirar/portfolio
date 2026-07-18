@@ -6,16 +6,26 @@
 
 export type ResearchStatus = "published" | "ongoing";
 
+export type ResearchAuthor = {
+  name: string;
+  /** Marks the site owner, rendered emphasized. */
+  self?: boolean;
+  /** e.g. "supervisor" — shown as a subtle parenthetical. */
+  role?: string;
+};
+
 export type ResearchPaper = {
   id: string;
   title: string;
   status: ResearchStatus;
-  authors: { name: string; self?: boolean }[];
+  authors: ResearchAuthor[];
   venue: string;
   year: number;
   /** e.g. "Vol. 16" — omitted for ongoing work. */
   volume?: string;
   doi?: string;
+  /** Public code/repo link (e.g. GitHub) for ongoing work. */
+  repo?: string;
   abstract: string;
   /** Short human-facing topic tags. */
   topics: string[];
@@ -23,7 +33,8 @@ export type ResearchPaper = {
   highlights?: { value: string; label: string }[];
 };
 
-const A = (name: string, self = false) => ({ name, self });
+const A = (name: string, self = false): ResearchAuthor => ({ name, self });
+const Advisor = (name: string): ResearchAuthor => ({ name, role: "supervisor" });
 
 export const research: ResearchPaper[] = [
   {
@@ -77,6 +88,29 @@ export const research: ResearchPaper[] = [
     ],
     abstract:
       "The Barind tract in northwest Bangladesh faces severe groundwater challenges due to excessive extraction and limited recharge capacity, primarily caused by its thick top clay layer and intensive agricultural water demand. This study develops and evaluates an innovative horizontal flow treatment unit integrated with Managed Aquifer Recharge (MAR). The developed system demonstrated exceptional treatment efficiency, achieving 97.06% turbidity reduction (from 68 to 2 NTU), 87.31% removal of total suspended solids, and significant bacterial contamination reduction of 81.82% (TC) and 93.75% (FC), while maintaining all chemical parameters within ECR 2023 drinking water standards. Under controlled conditions, the initial recharge rate achieved 168.06 lpm, while during monsoon flooding, natural condition recharge ranged from 154.11 to 167.38 lpm. The system demonstrated remarkable sustainability, with 96% recovery of the original recharge rate possible through backwashing and maintenance, showing only a minimal annual decline of 3.43 lpm/year. Long-term monitoring revealed a 2.01 m water table rise over seven years (2015–2021). The innovative aspects include a novel horizontal flow design that reduces clogging, integrated pre-treatment for suspended solids, and an efficient self-cleaning mechanism through backwashing. This study demonstrates that the integrated MAR-treatment system provides a sustainable solution for groundwater management in water-stressed regions, addressing both water quantity and quality challenges while ensuring long-term operational viability.",
+  },
+  {
+    id: "plastic-degrading-metagenome",
+    title:
+      "Metagenomic profiling of plastic-degrading microbial communities in urban water bodies",
+    status: "ongoing",
+    authors: [
+      A("Abrar"),
+      A("Md. Danial Dirar", true),
+      A("Saad Bin Sohan"),
+      Advisor("Swakkhar Shatabda"),
+    ],
+    venue: "Undergraduate research · in progress",
+    year: 2026,
+    repo: "https://github.com/AbrarUI12/Metagenomic-Profiling-of-Plastic-Degrading-Microbial-Communities-in-Urban-Water-Bodies",
+    topics: [
+      "Metagenomics",
+      "Bioinformatics",
+      "Plastic degradation",
+      "Machine learning",
+    ],
+    abstract:
+      "Urban freshwater bodies accumulate large amounts of plastic pollution, yet the microbial genetic capacity to degrade these polymers in such environments remains poorly characterized. This ongoing study performs a conservative, thesis-grade screen for putative plastic-degrading enzymes in a polluted freshwater sediment metagenome (NCBI SRA accession SRR23872596), reporting genetic potential and homology-based inference rather than confirmed degradation. Sequencing reads are screened against a curated UniProtKB reference set of PETase-, MHETase-, cutinase-, AlkB-, and polyesterase-like enzymes using translated homology search (DIAMOND blastx) under strict thresholds (e-value ≤ 1e-5, ≥ 30% identity, ≥ 50 aa alignment length). Best-hit protein accessions are mapped to genus-level taxonomy to build genus–enzyme abundance matrices (raw and CPM-normalized), which are then clustered with k-means (k selected by silhouette) and organized into putative functional modules via a cosine-similarity genus network with Louvain community detection. The fully reproducible pipeline outputs enzyme–genus heatmaps, PCA and clustering figures, and modularity networks that together map which microbial genera co-carry plastic-degrading potential in urban water sediments. All results represent genetic potential only; homology-based inference cannot confirm enzymatic activity or plastisphere association.",
   },
   {
     id: "groundwater-level-prediction",

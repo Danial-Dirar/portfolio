@@ -6,7 +6,7 @@ import { research } from "@/lib/data/research";
 export const metadata: Metadata = {
   title: "Research",
   description:
-    "Peer-reviewed research and ongoing work by Md. Danial Dirar — managed aquifer recharge, hydrology, and machine learning for groundwater.",
+    "Peer-reviewed research and ongoing work by Md. Danial Dirar — managed aquifer recharge, hydrology, machine learning for groundwater, and metagenomics.",
 };
 
 export default function ResearchPage() {
@@ -31,21 +31,6 @@ export default function ResearchPage() {
         </Reveal>
 
         <div className="mt-10 space-y-8">
-          <div>
-            <Reveal>
-              <h2 className="mb-4 font-mono text-sm text-muted-foreground">
-                {"// published — peer reviewed"}
-              </h2>
-            </Reveal>
-            <div className="space-y-5">
-              {published.map((paper, i) => (
-                <Reveal key={paper.id} delay={i * 0.06}>
-                  <PaperCard paper={paper} />
-                </Reveal>
-              ))}
-            </div>
-          </div>
-
           {ongoing.length > 0 && (
             <div>
               <Reveal>
@@ -62,6 +47,21 @@ export default function ResearchPage() {
               </div>
             </div>
           )}
+
+          <div>
+            <Reveal>
+              <h2 className="mb-4 font-mono text-sm text-muted-foreground">
+                {"// published — peer reviewed"}
+              </h2>
+            </Reveal>
+            <div className="space-y-5">
+              {published.map((paper, i) => (
+                <Reveal key={paper.id} delay={i * 0.06}>
+                  <PaperCard paper={paper} />
+                </Reveal>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

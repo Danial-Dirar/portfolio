@@ -30,7 +30,11 @@ safayatborhan.github.io (minimal blog)। Design spec:
 - **Theme:** dependency-free dark/light, **dark default**, terminal-green accent।
   Anti-FOUC: `next/script beforeInteractive` (layout.tsx) — ⚠️ Haifa-র
   InlineScript hack ব্যবহার কোরো না, ওটা React 19-এ hydration ভাঙে (নিচে দেখো)
-- **কোনো backend নেই।** Deploy target: Vercel (এখনো deploy হয়নি)
+- **কোনো backend নেই।** Deploy target: **GitHub Pages** (static export,
+  `output: "export"`) — `.github/workflows/deploy.yml`, push-to-main এ auto build+deploy।
+  base path auto: user-site হলে root, project repo (`portfolio`) হলে `/portfolio`
+  (`configure-pages` → `PAGES_BASE_PATH` → `next.config.ts`)। Owner-কে একবার
+  repo Settings → Pages → Source = **GitHub Actions** সিলেক্ট করতে হবে।
 
 ## Structure (গুরুত্বপূর্ণ ফাইল)
 
@@ -71,6 +75,18 @@ ORCID: `0009-0002-4081-4175`। Email এখন `danieldirar@protonmail.com`
 
 ## নতুন blog post লেখার নিয়ম
 
+**সহজ উপায় — Blog Studio (Facebook-এর মতো type-ও-post):**
+```bash
+npm run studio    # http://127.0.0.1:4321 খোলে
+```
+Composer-এ title + body (Markdown) + tags লেখো → **Post** চাপো। এটা
+`content/blog/<slug>.mdx` বানায়, আর "commit & push" toggle অন থাকলে নিজেই
+commit + push করে → Actions rebuild → ~1 min-এ live। শুধু owner-এর মেশিনে
+চলে (owner-এর git creds), browser-এ কোনো token নেই — তাই শুধু owner-ই post
+করতে পারে। Studio-তে পুরনো post-এর list + delete-ও আছে।
+(`studio/server.mjs` = Node built-in HTTP server, localhost-only; `studio/index.html` = UI)
+
+**Manual উপায়:**
 1. `content/blog/<slug>.mdx` বানাও — frontmatter: `title, date (yyyy-mm-dd),
    tags[], excerpt, cover (optional)`
 2. ছবি: `public/blog/<slug>/` এ রাখো, MDX-এ `![alt](/blog/<slug>/x.jpg)`
@@ -127,10 +143,32 @@ npm run build   # ⚠️ dev server চালু থাকা অবস্থা
 - Light mode warm-paper করা হয়েছে (flashbang white না)।
 - CV lightbox portal fix (উপরে session 1-এ ব্যাখ্যা করা bug)।
 
+### 2026-07-18 — session 3: GitHub Pages hosting + Blog Studio + Metagenomics paper
+
+- **Research entry যোগ:** `lib/data/research.ts`-এ ongoing "Metagenomic profiling
+  of plastic-degrading microbial communities in urban water bodies"। Authors:
+  Abrar, **Md. Danial Dirar**, Saad Bin Sohan (GitHub contributors —
+  `github.com/AbrarUI12/...`), supervisor **Swakkhar Shatabda** (BRACU CSE prof)।
+  Abstract repo README থেকে লেখা। ⚠️ **Abrar-এর full name unknown** (login
+  AbrarUI12) — owner ঠিক করে দেবেন। `ResearchAuthor.role` + `ResearchPaper.repo`
+  নতুন field, paper-card-এ supervisor tag + "code on github" link render হয়।
+- **GitHub Pages static export:** `next.config.ts` → `output:"export"`,
+  `images.unoptimized`, env-driven basePath। `.github/workflows/deploy.yml`।
+- **Blog static export fix:** `/blog` আগে server-side `await searchParams` দিয়ে
+  tag filter করত → static export-এ ভাঙে। এখন client-side filter:
+  `components/blog/blog-feed.tsx` ("use client", useState)। `lib/posts.ts` নতুন
+  fs-free module (types + formatDate) — client tree-তে `node:fs` টানা এড়াতে;
+  `lib/blog.ts` ওখান থেকে re-export করে।
+- **Blog Studio** (উপরে "নতুন blog post" দেখো) — `studio/` subfolder, `npm run studio`।
+
 ## Pending / জিজ্ঞেস করার আছে
 
 - [ ] Email কোনটা যাবে — protonmail (এখন) নাকি gmail?
 - [ ] ছবি home page-এও যাবে কিনা (এখন শুধু About-এ)
 - [ ] `site.url` এখন `danialdirar.dev` placeholder — আসল domain ঠিক হয়নি
-- [ ] Vercel deploy (CLI install করা নেই)
+- [ ] **Hosting URL:** এখন remote `Danial-Dirar/portfolio` (project repo →
+  `danial-dirar.github.io/portfolio`)। Root URL চাইলে `Danial-Dirar.github.io`
+  repo বানাতে হবে। workflow দুটোতেই কাজ করে। Owner সিদ্ধান্ত দেবেন।
+- [ ] **Metagenomics paper-এ Abrar-এর full name** owner দেবেন (এখন শুধু "Abrar")
+- [ ] Repo Settings → Pages → Source = GitHub Actions (একবার enable করতে হবে)
 - [ ] Terminal hero-র লাইনগুলো owner-এর পছন্দমতো tweak

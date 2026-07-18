@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { formatDate, type PostMeta } from "@/lib/blog";
+import { formatDate, type PostMeta } from "@/lib/posts";
 
 export function PostCard({ post }: { post: PostMeta }) {
   return (

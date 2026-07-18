@@ -1,20 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import type { Post } from "./posts";
+
+export type { Post, PostMeta } from "./posts";
+export { formatDate } from "./posts";
 
 const BLOG_DIR = path.join(process.cwd(), "content", "blog");
-
-export type PostMeta = {
-  slug: string;
-  title: string;
-  date: string; // ISO yyyy-mm-dd
-  tags: string[];
-  excerpt: string;
-  /** Optional cover image, e.g. /blog/<slug>/cover.jpg */
-  cover?: string;
-};
-
-export type Post = PostMeta & { content: string };
 
 function parseFile(fileName: string): Post {
   const slug = fileName.replace(/\.mdx?$/, "");
@@ -49,13 +41,4 @@ export function getAllTags(): string[] {
   const tags = new Set<string>();
   for (const post of getAllPosts()) for (const t of post.tags) tags.add(t);
   return [...tags].sort();
-}
-
-export function formatDate(iso: string): string {
-  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
 }

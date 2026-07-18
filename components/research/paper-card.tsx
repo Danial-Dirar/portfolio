@@ -1,5 +1,6 @@
 import { ArrowUpRight, FlaskConical } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { GitHubIcon } from "@/components/shared/icons";
 import { doiUrl, type ResearchPaper } from "@/lib/data/research";
 import { cn } from "@/lib/utils";
 
@@ -36,6 +37,9 @@ export function PaperCard({ paper }: { paper: ResearchPaper }) {
               <span className={a.self ? "font-semibold text-foreground" : undefined}>
                 {a.name}
               </span>
+              {a.role ? (
+                <span className="text-muted-foreground/70"> ({a.role})</span>
+              ) : null}
               {i < paper.authors.length - 1 ? ", " : ""}
             </span>
           ))}
@@ -72,17 +76,31 @@ export function PaperCard({ paper }: { paper: ResearchPaper }) {
           ))}
         </div>
 
-        {paper.doi && (
-          <a
-            href={doiUrl(paper.doi)}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
-          >
-            doi:{paper.doi}
-            <ArrowUpRight className="size-3" />
-          </a>
-        )}
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1">
+          {paper.doi && (
+            <a
+              href={doiUrl(paper.doi)}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+            >
+              doi:{paper.doi}
+              <ArrowUpRight className="size-3" />
+            </a>
+          )}
+          {paper.repo && (
+            <a
+              href={paper.repo}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 font-mono text-xs text-primary hover:underline"
+            >
+              <GitHubIcon className="size-3" />
+              code on github
+              <ArrowUpRight className="size-3" />
+            </a>
+          )}
+        </div>
       </div>
     </article>
   );
