@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# local project notes (owner-only)
+handout.md
+
 # debug
 npm-debug.log*
 yarn-debug.log*

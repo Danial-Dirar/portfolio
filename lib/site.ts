@@ -6,7 +6,7 @@ export const site = {
   tagline: "Machine Learning · Generative AI · Local AI for business",
   description:
     "Portfolio and blog of Md. Danial Dirar — a computer-science engineer working on machine learning, generative AI, and local AI tailored for businesses.",
-  url: "https://danialdirar.dev",
+  url: "https://danial-dirar.github.io",
   email: "danieldirar@protonmail.com",
   location: "Dhaka, Bangladesh · Remote worldwide",
   social: {
